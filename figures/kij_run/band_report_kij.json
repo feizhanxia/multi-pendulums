@@ -1,0 +1,25 @@
+{
+  "summary_path": "data/summary/scan_kij.csv",
+  "node_a": 1,
+  "node_b": 2,
+  "window_size": 15,
+  "band_a": {
+    "start": 65,
+    "end": 79,
+    "omega_start": 1.25,
+    "omega_end": 1.39,
+    "win_ratio": 1.0,
+    "avg_selectivity": 8.862195390867386,
+    "score": 8.862195390867386
+  },
+  "band_b": {
+    "start": 11,
+    "end": 25,
+    "omega_start": 0.71,
+    "omega_end": 0.85,
+    "win_ratio": 1.0,
+    "avg_selectivity": 17.777696260377883,
+    "score": 17.777696260377883
+  },
+  "non_overlap": true
+}
