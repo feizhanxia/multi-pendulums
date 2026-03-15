@@ -16,7 +16,8 @@ K_opt = [
     [0.615, -0.679, 0]
 ]
 
-OUTPUT_DIR = Path("/home/yono/.openclaw/workspace/kij_verification")
+ROOT_DIR = Path(__file__).resolve().parent
+OUTPUT_DIR = ROOT_DIR / "research" / "data" / "kij_verification"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 def run_single_sim(Omega, seed, t_total=800, dt=0.1, discard_ratio=0.5):
