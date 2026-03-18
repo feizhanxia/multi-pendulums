@@ -20,7 +20,12 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--target_half_width", type=float, default=0.2, help="Half width of target omega band.")
     p.add_argument("--use_target_band", action="store_true", help="If set, select best only inside target band.")
     p.add_argument("--n_samples", type=int, default=1500, help="Number of random K_ij candidates in coarse stage.")
-    p.add_argument("--top_k", type=int, default=80, help="Number of top coarse candidates sent to robustness screening.")
+    p.add_argument(
+        "--coarse_selectivity_threshold",
+        type=float,
+        default=3.0,
+        help="Send coarse candidates with best_selectivity >= threshold to robustness screening.",
+    )
     p.add_argument("--rng_seed", type=int, default=0, help="Random seed used to sample K_ij candidates.")
     p.add_argument(
         "--workers",
@@ -169,7 +174,7 @@ def main() -> None:
         "n_samples": int(args.n_samples),
         "omega_coarse": [0.5, 1.5, 0.1],
         "omega_fine": [0.5, 1.5, 0.02],
-        "top_k": int(args.top_k),
+        "coarse_selectivity_threshold": float(args.coarse_selectivity_threshold),
         "robust_seeds": [0, 42],
         "final_seeds": [0, 42, 123, 456],
         "pass_threshold": 2.0,
@@ -206,7 +211,7 @@ def main() -> None:
 
     print(
         f"[coarse] evaluating {cfg['n_samples']} random K_ij with {cfg['workers']} workers "
-        f"(target_band={'on' if cfg['use_target_band'] else 'off'})"
+        f"(target_band_for_coarse=off, target_band_for_refined={'on' if cfg['use_target_band'] else 'off'})"
     )
     coarse_payloads = [
         {
@@ -215,7 +220,7 @@ def main() -> None:
             "omegas": omega_coarse,
             "base": base.__dict__,
             "seed": 10000 * (c["kidx"] + 1),
-            "use_target_band": cfg["use_target_band"],
+            "use_target_band": False,
             "target_omega": cfg["target_omega"],
             "target_half_width": cfg["target_half_width"],
         }
@@ -240,13 +245,19 @@ def main() -> None:
 
     all_candidates = sorted(coarse_results, key=lambda x: x["kidx"])
 
-    top = sorted(all_candidates, key=lambda x: x["best_selectivity"], reverse=True)[: cfg["top_k"]]
-    print(f"[robustness] evaluating top-{len(top)} coarse candidates")
+    selected = [
+        c for c in sorted(all_candidates, key=lambda x: x["best_selectivity"], reverse=True)
+        if float(c["best_selectivity"]) >= cfg["coarse_selectivity_threshold"]
+    ]
+    print(
+        "[robustness] evaluating "
+        f"{len(selected)} coarse candidates with best_selectivity >= {cfg['coarse_selectivity_threshold']:.2f}"
+    )
 
     robustness_test = []
     passed = []
     robustness_start = time.perf_counter()
-    for rank, c in enumerate(top, start=1):
+    for rank, c in enumerate(selected, start=1):
         K = np.array(c["K"], dtype=float)
         checks = seed_check(K, float(c["best_omega"]), base, cfg["robust_seeds"])
         item = {
@@ -261,7 +272,7 @@ def main() -> None:
         if item["passed"]:
             passed.append(item)
         robustness_test.append(item)
-        _print_progress("robustness", rank, len(top), robustness_start, extra=f"passed={len(passed)}")
+        _print_progress("robustness", rank, len(selected), robustness_start, extra=f"passed={len(passed)}")
 
     print(f"[refined] evaluating {len(passed)} passed candidates")
     refined_results = []
@@ -328,8 +339,9 @@ def main() -> None:
             "omega_fine_step": cfg["omega_fine"][2],
             "coarse_results": coarse_results,
             "robustness_test": robustness_test,
+            "selected_for_robustness": len(selected),
             "passed_candidates": len(passed),
-            "failed_candidates": len(top) - len(passed),
+            "failed_candidates": len(selected) - len(passed),
             "refined_results": refined_results,
             "final_verification": final_verification,
         }

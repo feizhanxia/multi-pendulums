@@ -11,7 +11,7 @@ fi
 
 WORKERS="${WORKERS:-50}"
 N_SAMPLES="${N_SAMPLES:-1500}"
-TOP_K="${TOP_K:-80}"
+COARSE_SELECTIVITY_THRESHOLD="${COARSE_SELECTIVITY_THRESHOLD:-3.0}"
 RNG_SEED="${RNG_SEED:-0}"
 TARGET_OMEGA="${TARGET_OMEGA:-1.5}"
 TARGET_HALF_WIDTH="${TARGET_HALF_WIDTH:-0.2}"
@@ -19,7 +19,7 @@ TARGET_HALF_WIDTH="${TARGET_HALF_WIDTH:-0.2}"
 "$PYTHON_BIN" scripts/run_strict_search.py \
   --workers "$WORKERS" \
   --n_samples "$N_SAMPLES" \
-  --top_k "$TOP_K" \
+  --coarse_selectivity_threshold "$COARSE_SELECTIVITY_THRESHOLD" \
   --rng_seed "$RNG_SEED" \
   --use_target_band \
   --target_omega "$TARGET_OMEGA" \
