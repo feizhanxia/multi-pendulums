@@ -2,48 +2,48 @@
 
 ## Sample Counts
 
-- `stable_high`: 8
-- `unstable_peak`: 72
-- `medium`: 295
-- `low`: 1125
+- `stable_high`: 36
+- `unstable_peak`: 644
+- `medium`: 0
+- `low`: 820
 
 ## Stage Counts
 
-- `coarse_only`: 1420
-- `final_stable`: 8
-- `refined_failed`: 7
-- `robust_failed`: 65
+- `coarse_only`: 820
+- `final_stable`: 36
+- `refined_failed`: 83
+- `robust_failed`: 561
 
 ## Coarse Selectivity Quantiles
 
-- `q50`: 1.938
-- `q75`: 2.603
-- `q90`: 3.725
-- `max`: 81.111
+- `q50`: 2.874
+- `q75`: 3.942
+- `q90`: 5.758
+- `max`: 151.300
 
 ## Most Discriminative Structural Features
 
-- `target_out_strength`: 1.155
-- `target_sink_bias`: 1.069
-- `positive_ratio`: 0.831
-- `negative_ratio`: 0.831
-- `mean_abs_weight`: 0.677
-- `target_path_2hop`: 0.673
-- `drive_out_strength`: 0.669
-- `asymmetry_ratio`: 0.661
+- `asymmetry_norm`: 1.118
+- `mean_abs_weight`: 0.930
+- `fro_norm`: 0.921
+- `target_out_strength`: 0.824
+- `asymmetry_ratio`: 0.819
+- `target_path_3hop`: 0.694
+- `positive_ratio`: 0.605
+- `negative_ratio`: 0.605
 
 ## Top Stable Candidates
 
+- `K#1231`: omega=1.10, coarse=15.43, final_avg=10.01
 - `K#1427`: omega=1.40, coarse=6.77, final_avg=8.17
-- `K#1237`: omega=1.30, coarse=13.34, final_avg=8.05
-- `K#140`: omega=1.40, coarse=4.89, final_avg=6.72
-- `K#1129`: omega=1.50, coarse=5.85, final_avg=5.85
-- `K#91`: omega=1.50, coarse=5.19, final_avg=5.19
+- `K#1237`: omega=1.50, coarse=44.72, final_avg=8.05
+- `K#784`: omega=1.20, coarse=8.73, final_avg=6.40
+- `K#381`: omega=1.40, coarse=3.12, final_avg=5.91
 
 ## Top Unstable Peak Candidates
 
-- `K#475`: omega=1.30, coarse=81.11, stage=robust_failed
-- `K#1231`: omega=1.50, coarse=60.05, stage=robust_failed
-- `K#1122`: omega=1.50, coarse=34.22, stage=robust_failed
-- `K#931`: omega=1.40, coarse=26.48, stage=robust_failed
-- `K#815`: omega=1.50, coarse=16.18, stage=refined_failed
+- `K#406`: omega=1.00, coarse=151.30, stage=robust_failed
+- `K#475`: omega=0.70, coarse=87.21, stage=refined_failed
+- `K#931`: omega=1.20, coarse=41.32, stage=refined_failed
+- `K#997`: omega=0.70, coarse=37.37, stage=refined_failed
+- `K#720`: omega=0.70, coarse=36.28, stage=robust_failed
