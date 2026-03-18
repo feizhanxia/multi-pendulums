@@ -343,7 +343,6 @@ P_m^{(2)}
   \sum_{j \neq d,m} |K_{j d}K_{m j}|.
 $$
 
-
   Meaning: total strength of all two-step directed paths from the drive to the
   target.
 
@@ -458,8 +457,8 @@ $$
 
 
   where:
-  - `\mu_{\ell,f}` is the mean of feature `f` inside label `\ell`
-  - `\sigma_f` is the global standard deviation of feature `f`
+  - $\mu_{\ell,f}$ is the mean of feature `f` inside label $\ell$
+  - $\sigma_f$ is the global standard deviation of feature `f`
 
 - Plot type: horizontal bar chart of the top-scoring features
 
@@ -562,8 +561,8 @@ The figure has five panels arranged over three rows.
 
 #### Row 1, left: amplitude-frequency plot
 
-- Input: selected winner `K`
-- Frequency grid: `omega_fine`
+- Input: selected winner $K$
+- Frequency grid: $omega_fine$
 - Seed: first final seed
 - Plotted quantity:
   
@@ -573,7 +572,7 @@ A_i(K,\Omega)
 $$
 
 
-  for all nodes `i`
+  for all nodes $i$
 
 Additional elements:
 
@@ -601,7 +600,7 @@ Meaning: tests whether the target-node dominance persists across seeds.
 
 #### Row 2, right: selectivity vs Omega
 
-- x-axis: `\Omega`
+- x-axis: $\Omega$
 - y-axis:
   
 
@@ -623,7 +622,7 @@ response into a single non-driven node as the drive frequency changes.
 #### Row 3: time series
 
 - x-axis: time
-- y-axis: angle `\theta_i(t)`
+- y-axis: angle $\theta_i(t)$
 - plotted for all nodes at the selected best frequency and one seed
 
 Meaning: gives a time-domain view of the winner's dynamical behavior.
