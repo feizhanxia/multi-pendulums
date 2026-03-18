@@ -15,6 +15,9 @@ Suggested directory usage:
 - `code/`: analysis scripts, feature extraction, ablation studies
 - `results/`: CSV/JSON summaries, figures, notes, intermediate outputs
 
+For the precise definitions of the structural features used in the analysis,
+see `FEATURE_DEFINITIONS.md`.
+
 ## Current Model
 
 We study a network of `N = 5` damped, driven, nonlinearly coupled pendula.
