@@ -153,7 +153,7 @@ def build_candidate_records(data: dict[str, Any]) -> list[dict[str, Any]]:
             broad_label = "stable_high"
         elif kidx in robust_map:
             broad_label = "unstable_peak"
-        elif best_selectivity >= q75:
+        elif 2.0 <= best_selectivity < 3.0:
             broad_label = "medium"
         else:
             broad_label = "low"

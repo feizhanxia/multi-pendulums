@@ -4,8 +4,8 @@
 
 - `stable_high`: 36
 - `unstable_peak`: 644
-- `medium`: 0
-- `low`: 820
+- `medium`: 617
+- `low`: 203
 
 ## Stage Counts
 
@@ -24,13 +24,13 @@
 ## Most Discriminative Structural Features
 
 - `asymmetry_norm`: 1.118
-- `mean_abs_weight`: 0.930
-- `fro_norm`: 0.921
-- `target_out_strength`: 0.824
+- `mean_abs_weight`: 0.956
+- `target_out_strength`: 0.951
+- `fro_norm`: 0.926
 - `asymmetry_ratio`: 0.819
-- `target_path_3hop`: 0.694
-- `positive_ratio`: 0.605
-- `negative_ratio`: 0.605
+- `target_path_3hop`: 0.702
+- `target_sink_bias`: 0.633
+- `positive_ratio`: 0.622
 
 ## Top Stable Candidates
 
