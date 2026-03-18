@@ -197,8 +197,8 @@ def main() -> None:
     gs = fig.add_gridspec(3, 2, height_ratios=[1.0, 0.85, 1.0])
     ax_full = fig.add_subplot(gs[0, 0])
     ax_zoom = fig.add_subplot(gs[0, 1])
-    ax_bar = fig.add_subplot(gs[1, 0])
-    ax_sel = fig.add_subplot(gs[1, 1])
+    ax_sel = fig.add_subplot(gs[1, 0])
+    ax_bar = fig.add_subplot(gs[1, 1])
     ax_theta = fig.add_subplot(gs[2, :])
 
     def node_label(i: int) -> str:
@@ -252,15 +252,16 @@ def main() -> None:
         )
         amp_by_omega_zoom.append(run_simulation(p)["amp_fft"])
     amp_by_omega_zoom = np.array(amp_by_omega_zoom, dtype=float)
-    for i in range(amp_by_omega_zoom.shape[1]):
-        ax_zoom.plot(omegas_zoom, amp_by_omega_zoom[:, i], marker="o", markersize=2.5, linewidth=1.8, label=node_label(i))
+    sel_zoom = amp_by_omega_zoom[:, non_drive_idx]
+    sel_ratio_zoom = sel_zoom.max(axis=1) / (np.partition(sel_zoom, -2, axis=1)[:, -2] + 1e-12)
+    ax_zoom.plot(omegas_zoom, sel_ratio_zoom, color="#b22222", marker="o", markersize=3.0, linewidth=2.0)
     ax_zoom.axvline(omega_best, color="red", linestyle="--", linewidth=1.5, alpha=0.8)
     ax_zoom.set_xlim(zx0, zx1)
-    y_zoom_max = float(np.max(amp_by_omega_zoom))
-    ax_zoom.set_ylim(0.0, max(0.02, y_zoom_max * 1.10))
+    y_zoom_max = float(np.max(sel_ratio_zoom))
+    ax_zoom.set_ylim(0.0, max(2.0, y_zoom_max * 1.10))
     ax_zoom.set_title("Zoom Near Best Omega", fontsize=14, fontweight="bold")
     ax_zoom.set_xlabel("Driving Frequency (Omega)")
-    ax_zoom.set_ylabel("FFT Amplitude")
+    ax_zoom.set_ylabel("Selectivity")
 
     x = np.arange(amp_by_seed.shape[1])
     width = 0.8 / max(len(seeds), 1)
