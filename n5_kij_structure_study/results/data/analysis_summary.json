@@ -1,0 +1,840 @@
+{
+  "config": {
+    "N": 5,
+    "gamma": 0.08,
+    "F": 0.1,
+    "w0": 1.0,
+    "drive_index": 0,
+    "t_total": 800.0,
+    "dt": 0.1,
+    "discard_ratio": 0.5,
+    "k_range": [
+      -1.0,
+      1.0
+    ],
+    "n_samples": 1500,
+    "omega_coarse": [
+      0.5,
+      1.5,
+      0.1
+    ],
+    "omega_fine": [
+      0.5,
+      1.5,
+      0.02
+    ],
+    "top_k": 80,
+    "robust_seeds": [
+      0,
+      42
+    ],
+    "final_seeds": [
+      0,
+      42,
+      123,
+      456
+    ],
+    "pass_threshold": 2.0,
+    "rng_seed": 0,
+    "use_target_band": true,
+    "target_omega": 1.5,
+    "target_half_width": 0.2,
+    "workers": 50
+  },
+  "counts": {
+    "low": 1125,
+    "medium": 295,
+    "unstable_peak": 72,
+    "stable_high": 8
+  },
+  "stage_counts": {
+    "coarse_only": 1420,
+    "refined_failed": 7,
+    "robust_failed": 65,
+    "final_stable": 8
+  },
+  "coarse_quantiles": {
+    "q50": 1.937810576302999,
+    "q75": 2.6025652662713803,
+    "q90": 3.7245215793632678,
+    "max": 81.11140359935816
+  },
+  "top_stable": [
+    {
+      "kidx": 1427,
+      "coarse_rank": 40,
+      "best_omega": 1.4,
+      "best_selectivity": 6.765827119507893,
+      "target_idx": 3,
+      "target_amp": 0.08166255807188158,
+      "second_amp": 0.01206985585393666,
+      "target_dominance_coarse": 6.765827119507893,
+      "coarse_target_share": 0.8033945862775971,
+      "stage_status": "final_stable",
+      "broad_label": "stable_high",
+      "final_avg_selectivity": 8.17336626822021,
+      "final_min_selectivity": 8.173366235030533,
+      "fro_norm": 2.0990318384613404,
+      "asymmetry_norm": 2.7707822677211476,
+      "asymmetry_ratio": 1.3200286993983388,
+      "positive_ratio": 0.55,
+      "negative_ratio": 0.45,
+      "mean_abs_weight": 0.3777330663573847,
+      "std_abs_weight": 0.2785937248467154,
+      "max_abs_weight": 0.9644571641163473,
+      "drive_out_strength": 1.8450646967122495,
+      "drive_in_strength": 1.6455803574413455,
+      "target_in_strength": 1.159012002772103,
+      "target_out_strength": 0.6939359590862515,
+      "target_sink_bias": 0.4650760436858514,
+      "target_direct_from_drive": 0.5935031855597257,
+      "target_path_2hop": 0.14858897285462042,
+      "target_path_advantage_2hop": 0.29582119051728445,
+      "target_path_3hop": 0.22774076295621487,
+      "target_path_advantage_3hop": 0.60401667334856,
+      "K": [
+        [
+          0.0,
+          -0.009180671937492946,
+          -0.7957352898403778,
+          0.4035680246756157,
+          0.43709637098785903
+        ],
+        [
+          -0.2559042267364062,
+          0.0,
+          -0.8287379633563168,
+          0.12432337291666684,
+          -0.16895607101565457
+        ],
+        [
+          0.2297915021667849,
+          -0.45876028335677543,
+          0.0,
+          -0.08835917747515132,
+          0.4340878784812867
+        ],
+        [
+          0.5935031855597257,
+          0.17729578860979345,
+          0.3620782620524188,
+          0.0,
+          0.026134766550165
+        ],
+        [
+          0.7658657822493327,
+          0.35314016104470447,
+          -0.9644571641163473,
+          -0.07768538401881764,
+          0.0
+        ]
+      ]
+    },
+    {
+      "kidx": 1237,
+      "coarse_rank": 8,
+      "best_omega": 1.3,
+      "best_selectivity": 13.343915947724495,
+      "target_idx": 4,
+      "target_amp": 1.9153564798288027,
+      "second_amp": 0.14353781058865855,
+      "target_dominance_coarse": 13.343915947724495,
+      "coarse_target_share": 0.8869903893641701,
+      "stage_status": "final_stable",
+      "broad_label": "stable_high",
+      "final_avg_selectivity": 8.053834508744027,
+      "final_min_selectivity": 5.06609648485094,
+      "fro_norm": 2.735968542114007,
+      "asymmetry_norm": 4.193034060981099,
+      "asymmetry_ratio": 1.5325593099618482,
+      "positive_ratio": 0.6,
+      "negative_ratio": 0.4,
+      "mean_abs_weight": 0.55716320951922,
+      "std_abs_weight": 0.2526763762802414,
+      "max_abs_weight": 0.9187215902861179,
+      "drive_out_strength": 1.3969821132141116,
+      "drive_in_strength": 2.3026052906182484,
+      "target_in_strength": 2.9675882997085474,
+      "target_out_strength": 2.0082885293605313,
+      "target_sink_bias": 0.9592997703480162,
+      "target_direct_from_drive": 0.8596390723020197,
+      "target_path_2hop": 0.3614760348806092,
+      "target_path_advantage_2hop": 0.52092773152561,
+      "target_path_3hop": 0.5224023972849273,
+      "target_path_advantage_3hop": 0.6552048898749586,
+      "K": [
+        [
+          0.0,
+          0.4882835625800599,
+          0.7355937129038843,
+          -0.21728941852022143,
+          -0.861438596614083
+        ],
+        [
+          -0.23385494468526957,
+          0.0,
+          0.5604413652775395,
+          -0.835299245864729,
+          0.49924254355536357
+        ],
+        [
+          0.05642052998334934,
+          0.7108464229357048,
+          0.0,
+          -0.6898922480745029,
+          0.4155502952270467
+        ],
+        [
+          0.24706756624347292,
+          0.4736767539604676,
+          -0.9187215902861179,
+          0.0,
+          0.23205709396403806
+        ],
+        [
+          0.8596390723020197,
+          -0.5393339722139099,
+          -0.7983540568840257,
+          0.7702611983085919,
+          0.0
+        ]
+      ]
+    },
+    {
+      "kidx": 140,
+      "coarse_rank": 72,
+      "best_omega": 1.4,
+      "best_selectivity": 4.8923176811602245,
+      "target_idx": 3,
+      "target_amp": 0.11911420436684968,
+      "second_amp": 0.024347193319160982,
+      "target_dominance_coarse": 4.8923176811602245,
+      "coarse_target_share": 0.6522561594783779,
+      "stage_status": "final_stable",
+      "broad_label": "stable_high",
+      "final_avg_selectivity": 6.715777612181606,
+      "final_min_selectivity": 6.7157775602313095,
+      "fro_norm": 2.5790333997034116,
+      "asymmetry_norm": 3.127283006250676,
+      "asymmetry_ratio": 1.2125794906762744,
+      "positive_ratio": 0.4,
+      "negative_ratio": 0.6,
+      "mean_abs_weight": 0.49462425139592225,
+      "std_abs_weight": 0.29650887637693146,
+      "max_abs_weight": 0.928592398270802,
+      "drive_out_strength": 2.2051098004751593,
+      "drive_in_strength": 3.5720869475128345,
+      "target_in_strength": 1.7507788174844574,
+      "target_out_strength": 1.608014660159501,
+      "target_sink_bias": 0.1427641573249565,
+      "target_direct_from_drive": 0.7562991174239075,
+      "target_path_2hop": 0.43058311790267184,
+      "target_path_advantage_2hop": 0.6154664938933637,
+      "target_path_3hop": 0.29293338534820595,
+      "target_path_advantage_3hop": 0.7630068213345337,
+      "K": [
+        [
+          0.0,
+          0.9238943820519046,
+          -0.9071615665306394,
+          0.928592398270802,
+          -0.8124386006594886
+        ],
+        [
+          0.5311129572901647,
+          0.0,
+          -0.36738826471075847,
+          -0.3874436240579653,
+          -0.2898034469177413
+        ],
+        [
+          0.7174629439274478,
+          -0.6382371335266086,
+          0.0,
+          -0.24995826676878719,
+          -0.8569203254835847
+        ],
+        [
+          0.7562991174239075,
+          0.5342732456034036,
+          -0.10570641629652466,
+          0.0,
+          0.3545000381606216
+        ],
+        [
+          -0.20023478183363896,
+          0.09659301341915327,
+          -0.19244413392335602,
+          -0.04202037106194645,
+          0.0
+        ]
+      ]
+    },
+    {
+      "kidx": 1129,
+      "coarse_rank": 51,
+      "best_omega": 1.5,
+      "best_selectivity": 5.848673064891054,
+      "target_idx": 1,
+      "target_amp": 0.11906867786521187,
+      "second_amp": 0.020358237935048804,
+      "target_dominance_coarse": 5.848673064891054,
+      "coarse_target_share": 0.7897729025012052,
+      "stage_status": "final_stable",
+      "broad_label": "stable_high",
+      "final_avg_selectivity": 5.848673064862309,
+      "final_min_selectivity": 5.848673064734914,
+      "fro_norm": 2.226524521616977,
+      "asymmetry_norm": 3.095977216578002,
+      "asymmetry_ratio": 1.3904976956320285,
+      "positive_ratio": 0.6,
+      "negative_ratio": 0.4,
+      "mean_abs_weight": 0.4114749905735179,
+      "std_abs_weight": 0.28028361422068343,
+      "max_abs_weight": 0.8848096182856813,
+      "drive_out_strength": 1.1905111111449054,
+      "drive_in_strength": 1.4188741845112354,
+      "target_in_strength": 2.5076619293704008,
+      "target_out_strength": 1.1788555733438624,
+      "target_sink_bias": 1.3288063560265384,
+      "target_direct_from_drive": 0.6767549477287973,
+      "target_path_2hop": 0.2364530818228237,
+      "target_path_advantage_2hop": 0.3472885681276855,
+      "target_path_3hop": 0.2974321700260093,
+      "target_path_advantage_3hop": 0.7390934998950246,
+      "K": [
+        [
+          0.0,
+          0.07055919867724025,
+          0.8722968666834636,
+          -0.1264722467464643,
+          0.3495458724040672
+        ],
+        [
+          0.6767549477287973,
+          0.0,
+          0.3670725960577068,
+          0.7653922117815626,
+          0.6984421738023341
+        ],
+        [
+          0.37236800768704104,
+          -0.8848096182856813,
+          0.0,
+          0.2552402027135279,
+          -0.6194275045756858
+        ],
+        [
+          -0.015168620446607717,
+          -0.1907632811405573,
+          0.36734936213300307,
+          0.0,
+          -0.7826947275396061
+        ],
+        [
+          0.12621953528245933,
+          -0.03272347524038355,
+          0.3208566394110943,
+          -0.33534272313307434,
+          0.0
+        ]
+      ]
+    },
+    {
+      "kidx": 91,
+      "coarse_rank": 67,
+      "best_omega": 1.5,
+      "best_selectivity": 5.1921067408335615,
+      "target_idx": 1,
+      "target_amp": 0.18622009208326204,
+      "second_amp": 0.03586599840360243,
+      "target_dominance_coarse": 5.1921067408335615,
+      "coarse_target_share": 0.7108378778381478,
+      "stage_status": "final_stable",
+      "broad_label": "stable_high",
+      "final_avg_selectivity": 5.192085392241285,
+      "final_min_selectivity": 5.192011938770705,
+      "fro_norm": 2.361400853208114,
+      "asymmetry_norm": 2.395074055850219,
+      "asymmetry_ratio": 1.014259841820309,
+      "positive_ratio": 0.55,
+      "negative_ratio": 0.45,
+      "mean_abs_weight": 0.42010339545319375,
+      "std_abs_weight": 0.3198809725590097,
+      "max_abs_weight": 0.9892255823909908,
+      "drive_out_strength": 1.719522688729337,
+      "drive_in_strength": 2.6305919877247277,
+      "target_in_strength": 1.448504555596597,
+      "target_out_strength": 1.5777510879953962,
+      "target_sink_bias": -0.12924653239879924,
+      "target_direct_from_drive": 0.14440822020147914,
+      "target_path_2hop": 1.0060683587035937,
+      "target_path_advantage_2hop": 1.7135037616599476,
+      "target_path_3hop": 0.604758090440299,
+      "target_path_advantage_3hop": 0.9228531261861562,
+      "K": [
+        [
+          0.0,
+          0.7812914841744569,
+          -0.6069189892601501,
+          0.35278325044373626,
+          -0.8895982638463844
+        ],
+        [
+          0.14440822020147914,
+          0.0,
+          0.13321231213609686,
+          0.9892255823909908,
+          0.18165844086803018
+        ],
+        [
+          -0.15913434137688576,
+          -0.40798130273809186,
+          0.0,
+          0.4404970289380541,
+          -0.18407893233012862
+        ],
+        [
+          0.9010333946697295,
+          0.3756357266339827,
+          0.21924719376230994,
+          0.0,
+          0.9671027142503796
+        ],
+        [
+          -0.5149467324812425,
+          -0.012842574448864719,
+          -0.08079130594929618,
+          -0.05968011816358598,
+          0.0
+        ]
+      ]
+    }
+  ],
+  "top_unstable": [
+    {
+      "kidx": 475,
+      "coarse_rank": 1,
+      "best_omega": 1.3,
+      "best_selectivity": 81.11140359935816,
+      "target_idx": 1,
+      "target_amp": 7.292690236414406,
+      "second_amp": 0.0899095554104183,
+      "target_dominance_coarse": 81.11140359935816,
+      "coarse_target_share": 0.987654589118785,
+      "stage_status": "robust_failed",
+      "broad_label": "unstable_peak",
+      "final_avg_selectivity": NaN,
+      "final_min_selectivity": NaN,
+      "fro_norm": 2.774632898541722,
+      "asymmetry_norm": 3.361079044357412,
+      "asymmetry_ratio": 1.2113599049887644,
+      "positive_ratio": 0.4,
+      "negative_ratio": 0.6,
+      "mean_abs_weight": 0.5538887899128534,
+      "std_abs_weight": 0.279529237276491,
+      "max_abs_weight": 0.9481048032206607,
+      "drive_out_strength": 2.3099611727336082,
+      "drive_in_strength": 2.268410444390537,
+      "target_in_strength": 2.1980756708083917,
+      "target_out_strength": 1.8467999281239396,
+      "target_sink_bias": 0.35127574268445216,
+      "target_direct_from_drive": 0.6391837092148733,
+      "target_path_2hop": 1.0195264590246782,
+      "target_path_advantage_2hop": 0.6267889163225245,
+      "target_path_3hop": 0.6463313133935609,
+      "target_path_advantage_3hop": 0.48199755674819833,
+      "K": [
+        [
+          0.0,
+          0.6508806519458699,
+          -0.7528674235974868,
+          -0.21190435805550645,
+          -0.6527580107916742
+        ],
+        [
+          -0.6391837092148733,
+          0.0,
+          0.37637009265571186,
+          -0.3396846746763593,
+          0.8428371942614472
+        ],
+        [
+          -0.7590772237751884,
+          -0.41599969575824747,
+          0.0,
+          0.9481048032206607,
+          0.30182665976669654
+        ],
+        [
+          -0.06873140200487726,
+          -0.688517106937339,
+          0.7542735435018437,
+          0.0,
+          -0.7283137852477224
+        ],
+        [
+          0.8429688377386693,
+          -0.0914024734824832,
+          0.11064961940797469,
+          -0.9014245322164374,
+          0.0
+        ]
+      ]
+    },
+    {
+      "kidx": 1231,
+      "coarse_rank": 2,
+      "best_omega": 1.5,
+      "best_selectivity": 60.04860451369713,
+      "target_idx": 2,
+      "target_amp": 6.61472924696011,
+      "second_amp": 0.11015625259686487,
+      "target_dominance_coarse": 60.04860451369713,
+      "coarse_target_share": 0.9623106619705379,
+      "stage_status": "robust_failed",
+      "broad_label": "unstable_peak",
+      "final_avg_selectivity": NaN,
+      "final_min_selectivity": NaN,
+      "fro_norm": 2.7457165137810127,
+      "asymmetry_norm": 4.7175616011913535,
+      "asymmetry_ratio": 1.7181531951720959,
+      "positive_ratio": 0.55,
+      "negative_ratio": 0.45,
+      "mean_abs_weight": 0.5268560630046293,
+      "std_abs_weight": 0.31523110185663816,
+      "max_abs_weight": 0.9597305071309932,
+      "drive_out_strength": 2.2225479345566788,
+      "drive_in_strength": 2.131834381540159,
+      "target_in_strength": 2.643080468709834,
+      "target_out_strength": 3.395624398636018,
+      "target_sink_bias": -0.7525439299261842,
+      "target_direct_from_drive": 0.8779286129653923,
+      "target_path_2hop": 0.9759511903684533,
+      "target_path_advantage_2hop": 0.9156464697786584,
+      "target_path_3hop": 0.3371804278515516,
+      "target_path_advantage_3hop": 0.24477866413630253,
+      "K": [
+        [
+          0.0,
+          0.4107200433900158,
+          -0.8991632834069594,
+          0.7945919858049528,
+          0.027359068938230813
+        ],
+        [
+          -0.8888910906971832,
+          0.0,
+          0.5975557035725625,
+          0.22568886978937197,
+          -0.473834523262185
+        ],
+        [
+          0.8779286129653923,
+          -0.8072367372834732,
+          0.0,
+          -0.1758459230016658,
+          0.7820691954593029
+        ],
+        [
+          0.16166546027244477,
+          -0.11134142266632718,
+          -0.9597305071309932,
+          0.0,
+          0.4227498596076398
+        ],
+        [
+          0.29406277062165875,
+          -0.12142817518439664,
+          -0.9391749045255029,
+          0.5660831225123251,
+          0.0
+        ]
+      ]
+    },
+    {
+      "kidx": 1122,
+      "coarse_rank": 3,
+      "best_omega": 1.5,
+      "best_selectivity": 34.219647380275084,
+      "target_idx": 1,
+      "target_amp": 0.8110224259103723,
+      "second_amp": 0.023700490448175772,
+      "target_dominance_coarse": 34.219647380275084,
+      "coarse_target_share": 0.9424364560051435,
+      "stage_status": "robust_failed",
+      "broad_label": "unstable_peak",
+      "final_avg_selectivity": NaN,
+      "final_min_selectivity": NaN,
+      "fro_norm": 2.5419033780672997,
+      "asymmetry_norm": 3.509737741119659,
+      "asymmetry_ratio": 1.3807518300663566,
+      "positive_ratio": 0.65,
+      "negative_ratio": 0.35,
+      "mean_abs_weight": 0.4496669381301758,
+      "std_abs_weight": 0.34765397153510297,
+      "max_abs_weight": 0.9966134990507807,
+      "drive_out_strength": 1.2084620635507444,
+      "drive_in_strength": 2.0375791326109907,
+      "target_in_strength": 2.462339524096693,
+      "target_out_strength": 1.27721421909369,
+      "target_sink_bias": 1.1851253050030033,
+      "target_direct_from_drive": 0.31948792868854925,
+      "target_path_2hop": 0.7792576130104182,
+      "target_path_advantage_2hop": 2.194892235292331,
+      "target_path_3hop": 0.22736275976138648,
+      "target_path_advantage_3hop": 0.4425586695383719,
+      "K": [
+        [
+          0.0,
+          0.17113378663467094,
+          0.06907267646189252,
+          0.8541576953617311,
+          0.9432149741526958
+        ],
+        [
+          -0.31948792868854925,
+          0.0,
+          0.2077742822842974,
+          0.9384638140730657,
+          -0.9966134990507807
+        ],
+        [
+          0.08552672919417836,
+          -0.5597913319817882,
+          0.0,
+          -0.108716298553589,
+          0.7992478441899991
+        ],
+        [
+          0.6747959519494844,
+          -0.4438040037501749,
+          -0.9413419959049489,
+          0.0,
+          0.48893094052883557
+        ],
+        [
+          0.12865145371853237,
+          0.10248509672705586,
+          0.08772535171623863,
+          -0.07240310768100611,
+          0.0
+        ]
+      ]
+    },
+    {
+      "kidx": 931,
+      "coarse_rank": 4,
+      "best_omega": 1.4,
+      "best_selectivity": 26.484169803575014,
+      "target_idx": 3,
+      "target_amp": 2.0082055859592503,
+      "second_amp": 0.07582663911412034,
+      "target_dominance_coarse": 26.484169803575014,
+      "coarse_target_share": 0.9320372911239581,
+      "stage_status": "robust_failed",
+      "broad_label": "unstable_peak",
+      "final_avg_selectivity": NaN,
+      "final_min_selectivity": NaN,
+      "fro_norm": 2.439439372824991,
+      "asymmetry_norm": 4.160698747779074,
+      "asymmetry_ratio": 1.7055962915606606,
+      "positive_ratio": 0.65,
+      "negative_ratio": 0.35,
+      "mean_abs_weight": 0.4361363158345542,
+      "std_abs_weight": 0.3276100375365523,
+      "max_abs_weight": 0.9659749807089779,
+      "drive_out_strength": 1.691501268742002,
+      "drive_in_strength": 1.875393706824211,
+      "target_in_strength": 2.9462099574703036,
+      "target_out_strength": 2.1251571309215667,
+      "target_sink_bias": 0.8210528265487369,
+      "target_direct_from_drive": 0.950014045700236,
+      "target_path_2hop": 0.5957255579784534,
+      "target_path_advantage_2hop": 1.0588616876414194,
+      "target_path_3hop": 0.22898656342349788,
+      "target_path_advantage_3hop": 0.3606824463187664,
+      "K": [
+        [
+          0.0,
+          0.08998482192960466,
+          0.6953092004079899,
+          -0.9659749807089779,
+          0.12412470377763851
+        ],
+        [
+          -0.5960920139010815,
+          0.0,
+          0.2807289488345295,
+          0.523856243255358,
+          0.25924110279876067
+        ],
+        [
+          -0.11912121244556118,
+          0.15489900085469244,
+          0.0,
+          -0.4710559988931049,
+          0.8664667875309711
+        ],
+        [
+          0.950014045700236,
+          -0.9246471684886894,
+          -0.17660084789760733,
+          0.0,
+          -0.8949478953837711
+        ],
+        [
+          0.026273996695123314,
+          0.2919613543160664,
+          0.1471560848071951,
+          0.16426990806412567,
+          0.0
+        ]
+      ]
+    },
+    {
+      "kidx": 815,
+      "coarse_rank": 5,
+      "best_omega": 1.5,
+      "best_selectivity": 16.181837746752255,
+      "target_idx": 1,
+      "target_amp": 1.9067837255652211,
+      "second_amp": 0.11783480686127487,
+      "target_dominance_coarse": 16.181837746752255,
+      "coarse_target_share": 0.8926416104556153,
+      "stage_status": "refined_failed",
+      "broad_label": "unstable_peak",
+      "final_avg_selectivity": 4.741160579866442,
+      "final_min_selectivity": 1.2605185855851875,
+      "fro_norm": 2.5377527233062898,
+      "asymmetry_norm": 3.392251023507229,
+      "asymmetry_ratio": 1.3367145633820172,
+      "positive_ratio": 0.5,
+      "negative_ratio": 0.5,
+      "mean_abs_weight": 0.471101297962692,
+      "std_abs_weight": 0.31634318593940247,
+      "max_abs_weight": 0.9454722057471414,
+      "drive_out_strength": 2.508905923942677,
+      "drive_in_strength": 2.8706485587714656,
+      "target_in_strength": 1.5902673557308615,
+      "target_out_strength": 1.1417314574095454,
+      "target_sink_bias": 0.44853589832131613,
+      "target_direct_from_drive": 0.7990053848140573,
+      "target_path_2hop": 0.46330063331305493,
+      "target_path_advantage_2hop": 0.5914652158130388,
+      "target_path_3hop": 0.3837002279220969,
+      "target_path_advantage_3hop": 0.8461674037100612,
+      "K": [
+        [
+          0.0,
+          0.910693413137996,
+          -0.47197432598278755,
+          0.8658570717774843,
+          0.622123747873198
+        ],
+        [
+          -0.7990053848140573,
+          0.0,
+          -0.3307461430989669,
+          -0.15826351350667212,
+          -0.3022523143111653
+        ],
+        [
+          -0.9454722057471414,
+          0.14759298254903364,
+          0.0,
+          -0.8620240425029408,
+          0.8932786033114057
+        ],
+        [
+          0.5587996051436874,
+          -0.0787621254355162,
+          0.14070630395559824,
+          0.0,
+          0.4307334743199718
+        ],
+        [
+          0.20562872823779088,
+          -0.004682936286999562,
+          -0.09785390420378581,
+          0.5955751330576418,
+          0.0
+        ]
+      ]
+    }
+  ],
+  "feature_scores": [
+    {
+      "feature": "target_out_strength",
+      "score": 1.1547523923644152
+    },
+    {
+      "feature": "target_sink_bias",
+      "score": 1.0693287037577577
+    },
+    {
+      "feature": "positive_ratio",
+      "score": 0.830946516837966
+    },
+    {
+      "feature": "negative_ratio",
+      "score": 0.830946516837965
+    },
+    {
+      "feature": "mean_abs_weight",
+      "score": 0.6766370705240964
+    },
+    {
+      "feature": "target_path_2hop",
+      "score": 0.6731103196842425
+    },
+    {
+      "feature": "drive_out_strength",
+      "score": 0.6688846700209533
+    },
+    {
+      "feature": "asymmetry_ratio",
+      "score": 0.6608417129300309
+    },
+    {
+      "feature": "asymmetry_norm",
+      "score": 0.6448880604656205
+    },
+    {
+      "feature": "target_path_advantage_3hop",
+      "score": 0.592173865925506
+    },
+    {
+      "feature": "target_direct_from_drive",
+      "score": 0.5109150651764474
+    },
+    {
+      "feature": "fro_norm",
+      "score": 0.5098147524165599
+    },
+    {
+      "feature": "target_path_3hop",
+      "score": 0.5050881167600929
+    },
+    {
+      "feature": "std_abs_weight",
+      "score": 0.4917706300895174
+    },
+    {
+      "feature": "target_in_strength",
+      "score": 0.3542461966200629
+    },
+    {
+      "feature": "max_abs_weight",
+      "score": 0.2908496364193354
+    },
+    {
+      "feature": "target_path_advantage_2hop",
+      "score": 0.2765804694173076
+    },
+    {
+      "feature": "drive_in_strength",
+      "score": 0.20353017709749957
+    }
+  ]
+}
