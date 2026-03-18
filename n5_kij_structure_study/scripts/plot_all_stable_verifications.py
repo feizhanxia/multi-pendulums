@@ -2,8 +2,11 @@
 from __future__ import annotations
 
 import argparse
+from concurrent.futures import ProcessPoolExecutor, as_completed
 import json
+import os
 from pathlib import Path
+import time
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -15,11 +18,17 @@ from src.simulate_kij import run_simulation
 
 def parse_args() -> argparse.Namespace:
     root = Path(__file__).resolve().parents[1]
-    p = argparse.ArgumentParser(description="Plot strict-search summary with full/zoom/robustness/theta panels.")
+    p = argparse.ArgumentParser(description="Plot verification figures for all stable final candidates.")
     p.add_argument("--json_path", type=Path, default=root / "results" / "data" / "n5_strict_results.json")
-    p.add_argument("--out_path", type=Path, default=root / "results" / "figures" / "n5_top1_verification_en.png")
+    p.add_argument(
+        "--out_dir",
+        type=Path,
+        default=root / "results" / "figures" / "stable_high_verifications",
+        help="Directory used to save one verification figure per stable candidate.",
+    )
     p.add_argument("--zoom_half_width", type=float, default=0.2, help="Half-width around best omega for zoom panel.")
     p.add_argument("--theta_seed", type=int, default=None, help="Seed for theta(t) panel; default uses first final seed.")
+    p.add_argument("--workers", type=int, default=10, help="Number of worker processes for parallel plotting.")
     return p.parse_args()
 
 
@@ -43,76 +52,45 @@ def simulate_theta(params: ParamsKij) -> tuple[np.ndarray, np.ndarray]:
     return t_eval, theta
 
 
-def main() -> None:
-    args = parse_args()
-    args.out_path.parent.mkdir(parents=True, exist_ok=True)
+def _format_seconds(seconds: float) -> str:
+    seconds = max(0.0, float(seconds))
+    mins, secs = divmod(int(seconds), 60)
+    hours, mins = divmod(mins, 60)
+    if hours:
+        return f"{hours:d}h{mins:02d}m{secs:02d}s"
+    return f"{mins:02d}m{secs:02d}s"
 
-    data = json.loads(args.json_path.read_text(encoding="utf-8"))["strict_search"]
-    cfg = data.get("config", {})
+
+def _print_progress(done: int, total: int, start_time: float, extra: str = "") -> None:
+    if total <= 0:
+        print("[plot] 0/0")
+        return
+    elapsed = time.perf_counter() - start_time
+    rate = done / elapsed if elapsed > 0 else 0.0
+    eta = (total - done) / rate if rate > 1e-12 else 0.0
+    message = (
+        f"\r[plot] {done}/{total} "
+        f"({100.0 * done / total:5.1f}%) "
+        f"elapsed={_format_seconds(elapsed)} "
+        f"eta={_format_seconds(eta)}"
+    )
+    if extra:
+        message += f" | {extra}"
+    print(message, end="" if done < total else "\n", flush=True)
+
+
+def plot_candidate(
+    candidate: dict,
+    cfg: dict,
+    out_path: Path,
+    zoom_half_width: float,
+    theta_seed_override: int | None,
+) -> None:
     use_target_band = bool(cfg.get("use_target_band", False))
-    final = data.get("final_verification", [])
-    refined = data.get("refined_results", [])
-    robust = data.get("robustness_test", [])
-    coarse = data.get("coarse_results", [])
+    K = np.array(candidate["K"], dtype=float)
+    omega_selected = float(candidate["omega"])
+    seed_results = {int(r["seed"]): r for r in candidate.get("seed_results", [])}
 
-    # Fallback priority: final -> refined -> robustness -> coarse.
-    if final:
-        candidate_pool = [
-            {
-                "kidx": c["kidx"],
-                "K": c["K"],
-                "omega": c["omega"],
-                "avg_selectivity": c["avg_selectivity"],
-                "seed_results": c.get("seed_results", []),
-                "source": "final_verification",
-            }
-            for c in final
-        ]
-    elif refined:
-        candidate_pool = [
-            {
-                "kidx": c["kidx"],
-                "K": c["K"],
-                "omega": c["refined_omega"],
-                "avg_selectivity": c["refined_selectivity"],
-                "seed_results": [],
-                "source": "refined_results",
-            }
-            for c in refined
-        ]
-    elif robust:
-        candidate_pool = [
-            {
-                "kidx": c["kidx"],
-                "K": c["K"],
-                "omega": c["original_omega"],
-                "avg_selectivity": c["min_selectivity"],
-                "seed_results": [],
-                "source": "robustness_test",
-            }
-            for c in robust
-        ]
-    elif coarse:
-        candidate_pool = [
-            {
-                "kidx": c["kidx"],
-                "K": c["K"],
-                "omega": c["best_omega"],
-                "avg_selectivity": c["best_selectivity"],
-                "seed_results": [],
-                "source": "coarse_results",
-            }
-            for c in coarse
-        ]
-    else:
-        raise ValueError("No candidates found in strict_search JSON.")
-
-    # Always visualize the strongest verified candidate. Using target-band
-    # proximity here made the plot highlight a candidate that was not the
-    # actual stable winner of the run.
-    best = max(candidate_pool, key=lambda x: x["avg_selectivity"])
-    K = np.array(best["K"], dtype=float)
-    omega_selected = float(best["omega"])
     n_nodes = int(cfg.get("N", K.shape[0]))
     gamma = float(cfg.get("gamma", 0.08))
     force = float(cfg.get("F", 0.1))
@@ -144,13 +122,11 @@ def main() -> None:
         amp_by_omega.append(run_simulation(p)["amp_fft"])
     amp_by_omega = np.array(amp_by_omega, dtype=float)
 
-    seeds = final_seeds
-    seed_results = {int(r["seed"]): r for r in best.get("seed_results", [])}
-    if seed_results and all(s in seed_results and "amp_fft" in seed_results[s] for s in seeds):
-        amp_by_seed = np.array([seed_results[s]["amp_fft"] for s in seeds], dtype=float)
+    if seed_results and all(s in seed_results and "amp_fft" in seed_results[s] for s in final_seeds):
+        amp_by_seed = np.array([seed_results[s]["amp_fft"] for s in final_seeds], dtype=float)
     else:
         amp_by_seed = []
-        for s in seeds:
+        for s in final_seeds:
             p = ParamsKij(
                 N=n_nodes,
                 gamma=gamma,
@@ -175,7 +151,7 @@ def main() -> None:
     winner_idx = int(non_drive_idx[int(np.argmax(sel[best_idx]))])
     omega_best = float(omegas[best_idx])
 
-    theta_seed = args.theta_seed if args.theta_seed is not None else (seeds[0] if seeds else 0)
+    theta_seed = theta_seed_override if theta_seed_override is not None else (final_seeds[0] if final_seeds else 0)
     theta_params = ParamsKij(
         N=n_nodes,
         gamma=gamma,
@@ -216,9 +192,8 @@ def main() -> None:
         fontweight="bold",
         arrowprops=dict(arrowstyle="->", lw=1.1, color="red"),
     )
-    source_tag = best.get("source", "unknown")
     ax_full.set_title(
-        f"N={n_nodes} K#{best['kidx']} Amplitude-Frequency (Peak selectivity: {best_ratio:.2f}x, source={source_tag})",
+        f"N={n_nodes} K#{candidate['kidx']} Amplitude-Frequency (Peak selectivity: {best_ratio:.2f}x)",
         fontsize=14,
         fontweight="bold",
     )
@@ -228,33 +203,31 @@ def main() -> None:
     ax_full.set_ylim(0.0, float(max(0.05, amp_by_omega.max() * 1.15)))
     ax_full.legend(loc="upper right", framealpha=0.9)
 
-    zoom_half_width = max(float(args.zoom_half_width), 1e-9)
-    zx0 = omega_best - zoom_half_width
-    zx1 = omega_best + zoom_half_width
+    zx0 = omega_best - max(float(zoom_half_width), 1e-9)
+    zx1 = omega_best + max(float(zoom_half_width), 1e-9)
     zoom_mask = (omegas >= zx0 - 1e-12) & (omegas <= zx1 + 1e-12)
     omegas_zoom = omegas[zoom_mask]
     sel_ratio_zoom = sel_ratio[zoom_mask]
     ax_zoom.plot(omegas_zoom, sel_ratio_zoom, color="#b22222", marker="o", markersize=3.0, linewidth=2.0)
     ax_zoom.axvline(omega_best, color="red", linestyle="--", linewidth=1.5, alpha=0.8)
     ax_zoom.set_xlim(zx0, zx1)
-    y_zoom_max = float(np.max(sel_ratio_zoom))
-    ax_zoom.set_ylim(0.0, max(2.0, y_zoom_max * 1.10))
+    ax_zoom.set_ylim(0.0, max(2.0, float(np.max(sel_ratio_zoom)) * 1.10))
     ax_zoom.set_title("Zoom Near Best Omega", fontsize=14, fontweight="bold")
     ax_zoom.set_xlabel("Driving Frequency (Omega)")
     ax_zoom.set_ylabel("Selectivity")
 
     x = np.arange(amp_by_seed.shape[1])
-    width = 0.8 / max(len(seeds), 1)
-    for j, s in enumerate(seeds):
-        offset = (j - (len(seeds) - 1) / 2.0) * width
+    width = 0.8 / max(len(final_seeds), 1)
+    for j, s in enumerate(final_seeds):
+        offset = (j - (len(final_seeds) - 1) / 2.0) * width
         ax_bar.bar(x + offset, amp_by_seed[j], width=width, label=f"Seed {s}", edgecolor="black", alpha=0.88)
     ax_bar.set_xticks(x)
     ax_bar.set_xticklabels([node_label(int(i)) for i in x])
     ax_bar.set_xlabel("Node")
     ax_bar.set_ylabel("Amplitude")
-    ax_bar.set_title(f"Seed Robustness at Omega={omega_best:.2f} ({len(seeds)} Seeds)", fontsize=14, fontweight="bold")
+    ax_bar.set_title(f"Seed Robustness at Omega={omega_best:.2f} ({len(final_seeds)} Seeds)", fontsize=14, fontweight="bold")
     ax_bar.set_ylim(0.0, float(max(0.05, amp_by_seed.max() * 1.18)))
-    ax_bar.legend(loc="upper left", framealpha=0.9, ncol=min(4, len(seeds)))
+    ax_bar.legend(loc="upper left", framealpha=0.9, ncol=min(4, len(final_seeds)))
 
     ax_sel.plot(omegas, sel_ratio, color="#b22222", linewidth=2.4, marker="o", markersize=3.2)
     ax_sel.axvline(omega_best, color="black", linestyle="--", linewidth=1.5, alpha=0.75)
@@ -275,10 +248,61 @@ def main() -> None:
     ax_theta.set_ylabel("Angle theta")
     ax_theta.legend(loc="upper right", ncol=min(3, n_nodes), framealpha=0.9)
 
-    fig.savefig(args.out_path, dpi=150)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(out_path, dpi=150)
     plt.close(fig)
-    print(f"json: {args.json_path}")
-    print(f"saved: {args.out_path}")
+
+
+def _plot_worker(payload: dict) -> int:
+    plot_candidate(
+        candidate=payload["candidate"],
+        cfg=payload["cfg"],
+        out_path=Path(payload["out_path"]),
+        zoom_half_width=float(payload["zoom_half_width"]),
+        theta_seed_override=payload["theta_seed_override"],
+    )
+    return int(payload["candidate"]["kidx"])
+
+
+def main() -> None:
+    args = parse_args()
+    data = json.loads(args.json_path.read_text(encoding="utf-8"))["strict_search"]
+    cfg = data.get("config", {})
+    final = data.get("final_verification", [])
+    stable = [c for c in final if bool(c.get("stable"))]
+    if not stable:
+        raise ValueError("No stable final candidates found in the JSON file.")
+
+    args.out_dir.mkdir(parents=True, exist_ok=True)
+    stable = sorted(stable, key=lambda x: int(x["kidx"]))
+    workers = max(1, min(int(args.workers), os.cpu_count() or 1))
+    print(f"saving {len(stable)} stable verification figures to {args.out_dir} with {workers} workers")
+
+    start_time = time.perf_counter()
+    payloads = [
+        {
+            "candidate": candidate,
+            "cfg": cfg,
+            "out_path": str(args.out_dir / f"K{int(candidate['kidx'])}_verification_en.png"),
+            "zoom_half_width": float(args.zoom_half_width),
+            "theta_seed_override": args.theta_seed,
+        }
+        for candidate in stable
+    ]
+    if workers == 1:
+        for idx, payload in enumerate(payloads, start=1):
+            kidx = _plot_worker(payload)
+            _print_progress(idx, len(payloads), start_time, extra=f"K{kidx}")
+    else:
+        done = 0
+        with ProcessPoolExecutor(max_workers=workers) as ex:
+            futures = [ex.submit(_plot_worker, payload) for payload in payloads]
+            for fut in as_completed(futures):
+                kidx = fut.result()
+                done += 1
+                _print_progress(done, len(payloads), start_time, extra=f"K{kidx}")
+
+    print(f"done: {args.out_dir}")
 
 
 if __name__ == "__main__":
